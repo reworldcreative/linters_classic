@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "wraith13.bracket-lens",
+    "anteprimorac.html-end-tag-labels",
+    "dbaeumer.vscode-eslint",
+    "stylelint.vscode-stylelint",
+    "celianriboulet.webvalidator",
+    "esbenp.prettier-vscode",
+    "usernamehw.errorlens"
+  ]
+}
