@@ -252,6 +252,7 @@
           "properties": [
             "font",
             "font-family",
+            "src",
             "font-size",
             "line-height",
             "letter-spacing",
@@ -485,14 +486,14 @@
       }
     ],
     "selector-class-pattern": [
-      "^[a-z]+([-]?[a-z0-9]+)*(__(?!_)[a-z0-9]([-]?[a-z0-9]+)*)?((--|_)[a-z]([a-z0-9-]*[a-z0-9])?)?$",
+      "^(?![a-zA-Z\\d]+(_{3,}|-{3,}))(?!(_|-)$)(?![-a-zA-Z\\d]+(_|-{2})[-a-zA-Z\\d]+(_|-{2}))(?![-a-zA-Z\\d]+(__)[-a-zA-Z]+(__))(?![^a-zA-Z\\d_\\-\\s]).*$",
       {
         "resolveNestedSelectors": true,
         "message": "Selector class pattern must match BEM"
       }
     ],
     "selector-id-pattern": [
-      "^[a-zA-Z_\\-]+$",
+      "^[a-zA-Z0-9\\d_\\-]+$",
       {
         "message": "Incorrect ID pattern"
       }
@@ -502,7 +503,7 @@
     "comment-whitespace-inside": null,
     "comment-no-empty": null,
     "scss/comment-no-empty": null,
-    "unit-allowed-list": ["px", "em", "rem", "vw", "vh", "fr", "deg", "s", "%", ""],
+    "unit-allowed-list": ["px", "em", "rem", "vw", "vh", "dvw", "dvh", "fr", "deg", "s", "%", ""],
     "declaration-property-value-no-unknown": true,
     "no-unknown-custom-media": true,
     "declaration-no-important": [

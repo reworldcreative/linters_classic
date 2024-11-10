@@ -1,3 +1,4 @@
+import disableAutofix from 'eslint-plugin-disable-autofix'
 import globals from 'globals'
 import html from '@html-eslint/eslint-plugin'
 import htmlParser from '@html-eslint/parser'
@@ -13,8 +14,8 @@ export default [
       quotes: ['warn', 'single'],
       camelcase: ['error', { ignoreImports: true }],
       /* eslint-disable-next-line no-magic-numbers */
-      complexity: ['error', 6],
-      curly: ['error', 'multi-or-nest'],
+      complexity: ['error', 5],
+      curly: ['error', 'multi-line'],
       'for-direction': 'error',
       'no-class-assign': 'error',
       'no-compare-neg-zero': 'error',
@@ -49,7 +50,7 @@ export default [
       'arrow-spacing': ['error', { before: true, after: true }],
       'no-empty-function': ['error', { allow: ['setters', 'constructors'] }],
       'no-magic-numbers': [
-        'error',
+        'warn',
         {
           ignore: [0, 1],
           ignoreArrayIndexes: true,
@@ -58,17 +59,17 @@ export default [
           detectObjects: false,
         },
       ],
-      // 'sort-imports': [
-      //   'error',
-      //   {
-      //     ignoreCase: false,
-      //     ignoreDeclarationSort: false,
-      //     ignoreMemberSort: false,
-      //     memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
-      //     allowSeparatedGroups: false,
-      //   },
-      // ],
-      // 'sort-vars': 'error',
+      'sort-imports': [
+        'error',
+        {
+          ignoreCase: false,
+          ignoreDeclarationSort: false,
+          ignoreMemberSort: false,
+          memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
+          allowSeparatedGroups: false,
+        },
+      ],
+      'sort-vars': 'error',
       'vars-on-top': 'error',
     },
   },
@@ -79,19 +80,36 @@ export default [
     files: ['**/*.html'],
     plugins: {
       '@html-eslint': html,
+      'disable-autofix': disableAutofix,
     },
     rules: {
-      // '@html-eslint/attrs-newline': [
-      //   'error',
-      //   {
-      //     closeStyle: 'newline',
-      //     ifAttrsMoreThan: 3,
-      //   },
-      // ],
+      '@html-eslint/require-attrs': [
+        'error',
+        {
+          tag: 'img',
+          attr: 'alt',
+        },
+        {
+          tag: 'img',
+          attr: 'src',
+        },
+        {
+          tag: 'a',
+          attr: 'href',
+        },
+      ],
+      '@html-eslint/attrs-newline': 'off',
+      'disable-autofix/@html-eslint/attrs-newline': [
+        'warn',
+        {
+          closeStyle: 'newline',
+          ifAttrsMoreThan: 3,
+        },
+      ],
       '@html-eslint/no-restricted-attr-values': [
         'error',
         {
-          attrPatterns: ['class'],
+          attrPatterns: ['^class$'],
           attrValuePatterns: [
             '\\b(_{0,2})?(-{0,2})?([bB][oO][lL][dD]|[bB][oO][lL][dD][eE][rR]|[lL][iI][gG][hH]|[lL][iI][gG][hH][tT][eE][rR]|[nN][oO][rR][mM][aA][lL]|[iI][tT][aA][lL][iI][cC]|[oO][bB][lL][iI][qQ][uU][eE]|[uU][nN][dD][eE][rR][lL][iI][nN][eE]|[lL][iI][nN][eE]-[tT][hH][rR][oO][uU][gG][hH]|[oO][vV][eE][rR][lL][iI][nN][eE]|[wW][iI][dD][eE]|[nN][aA][rR][rR][oO][wW]|[tT][aA][lL][lL]|[sS][hH][oO][rR][tT]|[rR][eE][lL][aA][tT][iI][vV][eE]|[aA][bB][sS][oO][lL][uU][tT][eE]|[rR][eE][dD]|[bB][lL][uU][eE]|[gG][rR][eE][eE][nN]|[yY][eE][lL][lL][oO][wW]|[pP][uU][rR][pP][lL][eE]|[oO][rR][aA][nN][gG][eE]|[pP][iI][nN][kK]|[bB][lL][aA][cC][kK]|[wW][hH][iI][tT][eE]|[gG][rR][aA][yY]|[lL][iI][gG][hH][tT][gG][rR][aA][yY]|[dD][aA][rR][kK][gG][rR][aA][yY]|[bB][rR][oO][wW][nN]|[cC][yY][aA][nN]|[mM][aA][gG][eE][nN][tT][aA])(_{0,2})?(-{0,2})?\\b',
           ],
@@ -101,19 +119,36 @@ export default [
           message: 'One of the ClassName is in restricted list',
         },
         {
-          attrPatterns: ['class'],
+          attrPatterns: ['^class$'],
           attrValuePatterns: [
-            '[a-zA-Z]+(_{3,}|-{3,})',
+            '[a-zA-Z\\d]+(_{3,}|-{3,})',
             '(_|-)$',
-            '[a-zA-Z]+(_|-{2})[a-zA-Z]+(_|-{2})',
-            '[a-zA-Z]+(__)[a-zA-Z]+(__)',
-            '[^a-zA-Z_\\-\\s]',
+            '[a-zA-Z\\d]*(_|-)$',
+            '[a-zA-Z\\d][-]?[a-zA-Z\\d]+(_|-{2})[-a-zA-Z\\d]+(_|-{2})',
+            '[a-zA-Z\\d]+(__)[-a-zA-Z]+(__)',
+            '[^a-zA-Z\\d_\\-\\s\\{\\}\\/#]',
+            '\\{\\{[-_]*\\}\\}',
+            '\\{\\}|\\{\\{\\}\\}',
+            '\\{[^\\}]*$',
+            '(?<![a-zA-Z0-9\\}])\\}',
+            '(?<!\\{)#',
+            '(?<!\\{)\\/',
           ],
           message: 'Class pattern must match BEM',
         },
+        // {
+        //   attrPatterns: ['^class$'],
+        //   attrValuePatterns: ['(?<!_)_(?!_)'],
+        //   message: 'using wrong modificator syntaxis. instead -- you use _',
+        // },
         {
-          attrPatterns: ['id'],
-          attrValuePatterns: ['[^a-zA-Z_\\-\\s]'],
+          attrPatterns: ['^class$'],
+          attrValuePatterns: ['[a-zA-Z]+--[a-zA-Z]+'],
+          message: 'using wrong modificator syntaxis. instead _ you use --',
+        },
+        {
+          attrPatterns: ['^id$'],
+          attrValuePatterns: ['[^a-zA-Z\\d_\\-\\s\\{\\}]'],
           message: 'Incorrect ID pattern',
         },
       ],
@@ -144,7 +179,10 @@ export default [
       '@html-eslint/require-img-alt': 'error',
       '@html-eslint/lowercase': 'error',
       '@html-eslint/no-positive-tabindex': 'error',
-      '@html-eslint/sort-attrs': [
+      '@html-eslint/no-non-scalable-viewport': 'warn',
+      // '@html-eslint/id-naming-convention': ['warn', 'camelCase'],
+      '@html-eslint/sort-attrs': 'off',
+      'disable-autofix/@html-eslint/sort-attrs': [
         'warn',
         {
           priority: [
@@ -157,9 +195,8 @@ export default [
             'srcset',
             'media',
             'alt',
-            'id',
-            'type',
             'class',
+            'id',
             'name',
             'content',
             'accept',

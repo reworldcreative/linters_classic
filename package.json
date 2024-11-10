@@ -13,6 +13,7 @@
     "@html-eslint/eslint-plugin": "^0.26.0",
     "@html-eslint/parser": "^0.26.0",
     "eslint": "^9.9.0",
+    "eslint-plugin-disable-autofix": "^5.0.1",
     "globals": "^15.9.0",
     "postcss-combine-media-query": "^1.0.1",
     "postcss-sort-media-queries": "^5.2.0",
