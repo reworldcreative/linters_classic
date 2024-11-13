@@ -506,6 +506,7 @@
     "unit-allowed-list": ["px", "em", "rem", "vw", "vh", "dvw", "dvh", "fr", "deg", "s", "%", ""],
     "declaration-property-value-no-unknown": true,
     "no-unknown-custom-media": true,
+    "declaration-block-no-duplicate-properties": true,
     "declaration-no-important": [
       true,
       {
